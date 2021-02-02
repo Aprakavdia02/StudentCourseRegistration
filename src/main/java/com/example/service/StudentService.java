@@ -1,6 +1,5 @@
 package com.example.service;
 
-import com.example.model.Registration;
 import com.example.model.Student;
 import com.example.repository.RegistrationRepository;
 import com.example.repository.StudentRepository;
@@ -21,13 +20,21 @@ public class StudentService {
     private RegistrationRepository registrationRepository;
 
     public String setStudent(Student student) {
-        try {
+        if (checkIsEmpty(student)) {
             studentRepository.save(student);
-        } catch (Exception e) {
-            String s = "Exception" + e + "occured";
-            return s;
+            return "Successfully Updated";
+        } else {
+            return "Error Occurred";
         }
-        return "Successfully Updated";
+    }
+
+    public boolean checkIsEmpty(Student student) {
+        System.out.print(student.getFirstName());
+        if (student.getFirstName().equals("") || student.getLastName().equals("") || student.getFirstName().equals(" ") || student.getLastName().equals(" ") || student.getAge() == -1 || student.getContactNo() == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public List<Student> getAllStudents() {
@@ -40,15 +47,14 @@ public class StudentService {
     }
 
 
-
     public String deleteStudent(int id) {
-            String s = registrationService.deleteRegistrationBySid(id);
-           if (s == "Deleted Successfully") {
-               studentRepository.deleteById(id);
-               return "Deleted Successfully";
-           }else{
+        String s = registrationService.deleteRegistrationBySid(id);
+        if (s == "Deleted Successfully") {
+            studentRepository.deleteById(id);
+            return "Deleted Successfully";
+        } else {
             return "Error Occurred";
-           }
+        }
     }
 
 

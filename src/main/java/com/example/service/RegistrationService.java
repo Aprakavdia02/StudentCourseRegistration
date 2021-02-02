@@ -18,12 +18,21 @@ public class RegistrationService {
 
     public String setRegistration(Registration registration) {
         try {
-            registrationRepository.save(registration);
+            if(checkIsEmpty(registration))
+                registrationRepository.save(registration);
         } catch (Exception e) {
             String s = "Exception" + e + "occured";
             return s;
         }
         return "Successfully Updated";
+    }
+
+    public boolean checkIsEmpty(Registration registration){
+        if(registration.getCourseId() == -1 || registration.getStudentId() == -1){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public Iterable<Registration> showAllRegistration() {
